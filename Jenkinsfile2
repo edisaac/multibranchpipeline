@@ -14,7 +14,7 @@ pipeline {
         MODALIDADES = "FC,AC,UK"
     }
     stages {        
-        stage('Despliegue Desarrollo'){
+        stage('Serverless Desarrollo'){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-dev')
                 AWS_ACCESS_KEY_ID = "${env.AWS_CREDENTIALS_USR}"
@@ -38,7 +38,7 @@ pipeline {
               }
             }
         }
-        stage('Despliegue Calidad'){
+        stage('Serverless Calidad '){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-qa')
                 AWS_ACCESS_KEY_ID = "${env.AWS_CREDENTIALS_USR}"
@@ -55,7 +55,7 @@ pipeline {
                 echo "con credenciales:  ${AWS_ACCESS_KEY_ID} y ${AWS_SECRET_ACCESS_KEY} "
             }
         }
-        stage('Produccion'){
+        stage(' Serverless Produccion'){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-prod')
                 AWS_ACCESS_KEY_ID = "${env.AWS_CREDENTIALS_USR}"
