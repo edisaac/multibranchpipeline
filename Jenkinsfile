@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         
-        STAGE = "${env.BRANCH_NAME ==~ 'feature/.*' ? 'devops' : env.BRANCH_NAME == 'develop' ? 'dev' : env.BRANCH_NAME ==~ 'release' ? 'sta' : env.BRANCH_NAME == 'main' ? 'prod' : '0' }"
+        STAGE = "${env.BRANCH_NAME ==~ 'feature/.*' ? 'devops' : env.BRANCH_NAME == 'develop' ? 'dev' : env.BRANCH_NAME ==~ 'release' ? 'qa' : env.BRANCH_NAME == 'main' ? 'prod' : '0' }"
         
         URL_CMS = "${env.BRANCH_NAME ==~ 'feature/.*' ? 'https://adminmi-dev-xx.xx01.link' : env.BRANCH_NAME == 'develop' ? 'https://adminmi-dev-xx.xx01.link' : env.BRANCH_NAME ==~ 'release' ? 'https://adminmi-cert.xx.xx.pe' : env.BRANCH_NAME == 'main' ? 'https://adminmi.xx.xx.pe' : '0' }"
        
@@ -17,8 +17,8 @@ pipeline {
         stage('Despliegue Desarrollo'){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-dev')
-                AWS_ACCESS_KEY_ID = AWS_CREDENTIALS.username
-                AWS_SECRET_ACCESS_KEY = AWS_CREDENTIALS.password
+                AWS_ACCESS_KEY_ID = $AWS_CREDENTIALS_USR
+                AWS_SECRET_ACCESS_KEY = $AWS_CREDENTIALS_PASW
                 AWS_DEFAULT_REGION = 'us-east-1'               
                 API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_DEV')
             }
@@ -33,10 +33,10 @@ pipeline {
         stage('Despliegue Calidad'){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-qa')
-                AWS_ACCESS_KEY_ID = AWS_CREDENTIALS.username
-                AWS_SECRET_ACCESS_KEY = AWS_CREDENTIALS.password
+                AWS_ACCESS_KEY_ID = $AWS_CREDENTIALS_USR
+                AWS_SECRET_ACCESS_KEY = $AWS_CREDENTIALS_PASW
                 AWS_DEFAULT_REGION = 'us-east-2'               
-                API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_STA')
+                API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_QA')
             }
             when { branch "release" }
             steps {
@@ -49,10 +49,10 @@ pipeline {
         stage('Produccion'){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-prod')
-                AWS_ACCESS_KEY_ID = AWS_CREDENTIALS.username
-                AWS_SECRET_ACCESS_KEY = AWS_CREDENTIALS.password
+                AWS_ACCESS_KEY_ID = $AWS_CREDENTIALS_USR
+                AWS_SECRET_ACCESS_KEY = $AWS_CREDENTIALS_PASW
                 AWS_DEFAULT_REGION = 'us-east-2'               
-                API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_STA')
+                API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_PROD')
             }
             when { branch "release" }
             steps {
