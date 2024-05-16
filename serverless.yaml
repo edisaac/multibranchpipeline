@@ -1,0 +1,43 @@
+service: ${self:custom.serviceName}
+
+package:
+  individually: true
+  exclude:
+    - "Jenkinsfile"
+    - "Jenkinsfile2"
+
+  include:
+    - "main.py"
+
+useDotenv: true
+
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${opt:stage, "dev"}
+  timeout: 10
+
+  environment:
+    STAGE: ${self:provider.stage}
+    API_KEY_GESTOR_NOTIFICACIONES: ${env:API_KEY_GESTOR_NOTIFICACIONES}
+    URL_CMS: ${env:URL_CMS}
+    API_KEY_LAMBDA: ${env:API_KEY_LAMBDA}
+    MODALIDADES: ${env:MODALIDADES}
+    
+plugins:
+  - serverless-dotenv-plugin
+
+custom:
+  serviceName: lambda-nodejs
+
+functions:
+  hola:
+    handler: index.handler
+    name: ${self:custom.serviceName}-${self:provider.stage}-app
+    events:
+      - http:
+          path: /hola
+          method: get
+

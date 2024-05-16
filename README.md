@@ -1,5 +1,8 @@
 Multipipeline
 
+serverless plugin install -n serverless-dotenv-plugin
+
+serverless config credentials -o --provider aws --key TU_ACCESS_KEY_ID --secret TU_SECRET_ACCESS_KEY
 
 
 main develop release feature/.*

@@ -1,4 +1,4 @@
-exports.handler = async (event) => {
+export const handler = async (event, context) => {
     // Obtener los valores de las variables de entorno
     const apiKeyLambda = process.env.API_KEY_LAMBDA;
     const modalidades = process.env.MODALIDADES;
@@ -16,3 +16,4 @@ exports.handler = async (event) => {
     
     return response;
 };
+
