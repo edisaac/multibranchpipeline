@@ -58,6 +58,7 @@ pipeline {
                         sh 'npm install serverless -g'
                         sh 'serverless plugin install -n serverless-dotenv-plugin'
                         sh 'serverless deploy --stage ${STAGE} --verbose'
+                    }
                 }
             }
         }
