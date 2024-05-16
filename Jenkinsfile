@@ -17,8 +17,8 @@ pipeline {
         stage('Despliegue Desarrollo'){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-dev')
-                //AWS_ACCESS_KEY_ID = $AWS_CREDENTIALS_USR
-                //AWS_SECRET_ACCESS_KEY = $AWS_CREDENTIALS_PASW
+                AWS_ACCESS_KEY_ID = "${env.AWS_CREDENTIALS_USR}"
+                AWS_SECRET_ACCESS_KEY =  "${env.AWS_CREDENTIALS_PSW}"
                 AWS_DEFAULT_REGION = 'us-east-1'               
                 API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_DEV')
             }
@@ -28,13 +28,14 @@ pipeline {
                 echo "El url del ambiente es:  ${URL_CMS}"               
                 echo "la region de despliegue es:  ${AWS_DEFAULT_REGION}"  
                 echo "las modalidades son:  ${MODALIDADES}"                
+                echo "con credenciales:  ${AWS_ACCESS_KEY_ID} y ${AWS_SECRET_ACCESS_KEY} "
             }
         }
         stage('Despliegue Calidad'){
             environment {
                 AWS_CREDENTIALS = credentials('aws-access-qa')
-                //AWS_ACCESS_KEY_ID = $AWS_CREDENTIALS_USR
-                //AWS_SECRET_ACCESS_KEY = $AWS_CREDENTIALS_PASW
+                AWS_ACCESS_KEY_ID = "${env.AWS_CREDENTIALS_USR}"
+                AWS_SECRET_ACCESS_KEY =  "${env.AWS_CREDENTIALS_PSW}"
                 AWS_DEFAULT_REGION = 'us-east-2'               
                 API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_QA')
             }
@@ -44,6 +45,8 @@ pipeline {
                 echo "El url del abmiente es:  ${URL_CMS}"
                 echo "la region de despliegue es:  ${AWS_DEFAULT_REGION}"               
                 echo "las modalidades son:  ${MODALIDADES}"
+                echo "con credenciales:  ${AWS_ACCESS_KEY_ID} y ${AWS_SECRET_ACCESS_KEY} "
+
             }
         }
         stage('Produccion'){
@@ -54,12 +57,13 @@ pipeline {
                 AWS_DEFAULT_REGION = 'us-east-2'               
                 API_KEY_GESTOR_NOTIFICACIONES = credentials('API_KEY_GESTOR_NOTIFICACIONES_PROD')
             }
-            when { branch "release" }
+            when { branch "main" }
             steps {
                 echo "El ambiente es: ${STAGE}"      
                 echo "El url del abmiente es:  ${URL_CMS}"
                 echo "la region de despliegue es:  ${AWS_DEFAULT_REGION}"               
                 echo "las modalidades son:  ${MODALIDADES}"
+                echo "con credenciales:  ${AWS_ACCESS_KEY_ID} y ${AWS_SECRET_ACCESS_KEY} "
             }
         }        
     }
