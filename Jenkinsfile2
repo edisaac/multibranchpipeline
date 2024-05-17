@@ -77,6 +77,13 @@ pipeline {
                 echo "la region de despliegue es:  ${AWS_DEFAULT_REGION}"               
                 echo "las modalidades son:  ${MODALIDADES}"
                 echo "con credenciales:  ${AWS_ACCESS_KEY_ID} y ${AWS_SECRET_ACCESS_KEY} "
+                script {                    
+                    nodejs(nodeJSInstallationName: 'nodejs22') {
+                        sh 'npm install serverless -g'
+                        sh 'serverless plugin install -n serverless-dotenv-plugin'
+                        sh 'serverless deploy --stage ${STAGE} --verbose'
+                    }
+                }
             }
         }        
     }
